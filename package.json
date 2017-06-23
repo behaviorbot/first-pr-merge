@@ -1,0 +1,19 @@
+{
+  "name": "first-pr-merge",
+  "version": "1.0.0",
+  "description": "Congratulate users when their first PR is merged into your repository.",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/behaviorbot/first-pr-merge.git"
+  },
+  "author": "hiimbex",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/behaviorbot/first-pr-merge/issues"
+  },
+  "homepage": "https://github.com/behaviorbot/first-pr-merge#readme"
+}
