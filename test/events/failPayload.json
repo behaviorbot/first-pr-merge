@@ -1,0 +1,22 @@
+{
+    "event": "pull_request",
+    "payload": {
+        "action": "closed",
+        "pull_request": {
+            "number": 3,
+            "user": {
+                "login": "hiimbex"
+            },
+            "merged": true
+        },
+        "repository": {
+            "name": "testing-things",
+            "owner": {
+                "login": "hiimbex"
+            }
+        },
+        "installation": {
+            "id": 35029
+        }
+    }
+}
