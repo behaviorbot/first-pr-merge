@@ -19,7 +19,7 @@ module.exports = robot => {
             });
 
             if (countPR.length === 1) {
-                let template;
+                let config;
                 try {
                     const options = context.repo({path: '.github/config.yml'});
                     const res = await context.github.repos.getContent(options);
