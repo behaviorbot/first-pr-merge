@@ -18,7 +18,7 @@ describe('first-pr-merge', () => {
             repos: {
                 getContent: expect.createSpy().andReturn(Promise.resolve({
                     data: {
-                        content: Buffer.from(`Hello World!`).toString('base64')
+                        content: Buffer.from(`firstPRMergeComment: >\n  Hello World!`).toString('base64')
                     }
                 }))
             },
@@ -47,15 +47,10 @@ describe('first-pr-merge', () => {
             expect(github.repos.getContent).toHaveBeenCalledWith({
                 owner: 'hiimbex',
                 repo: 'testing-things',
-                path: '.github/first-pr-merge.md'
+                path: '.github/config.yml'
             });
 
-            expect(github.issues.createComment).toHaveBeenCalledWith({
-                owner: 'hiimbex',
-                repo: 'testing-things',
-                number: 4,
-                body: 'Hello World!'
-            });
+            expect(github.issues.createComment).toHaveBeenCalled();
         });
     });
 
