@@ -28,4 +28,4 @@ npm install
 npm start
 ```
 
-See [docs/deploy.md](docs/deploy.md) if you would like to run your own instance of this plugin.
+See [the probot deployment docs](https://github.com/probot/probot/blob/master/docs/deployment.md) if you would like to run your own instance of this plugin.
