@@ -1,6 +1,6 @@
 # first-pr-merge
 
-> a GitHub App built with [probot](https://github.com/probot/probot) that welcomes new users when their first pull request is merged in. You can use this message to congratulate users or thank them for their contirbutions. It should be located in a `.github/config/yml`
+> a GitHub App built with [probot](https://github.com/probot/probot) that welcomes new users when their first pull request is merged in. You can use this message to congratulate users or thank them for their contirbutions. It should be located in a `.github/config.yml`
 
 <img width="807" alt="screen shot 2017-07-17 at 1 58 37 pm" src="https://user-images.githubusercontent.com/13410355/28289605-1ab81a76-6af8-11e7-8f78-6a1b3948df36.png">
 
