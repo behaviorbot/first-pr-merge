@@ -14,9 +14,7 @@ module.exports = robot => {
                 creator: userLogin
             }));
 
-            const countPR = response.data.filter(function (data) {
-                if (data.pull_request) return data;
-            });
+            const countPR = response.data.filter(data => data.pull_request);
 
             if (countPR.length === 1) {
                 let config;
@@ -25,7 +23,9 @@ module.exports = robot => {
                     const res = await context.github.repos.getContent(options);
                     config = yaml.load(Buffer.from(res.data.content, 'base64').toString()) || {};
                 } catch (err) {
-                    if (err.code !== 404) throw err;
+                    if (err.code !== 404) {
+                        throw err;
+                    }
                 }
                 context.github.issues.createComment(context.issue({body: config.firstPRMergeComment}));
             }

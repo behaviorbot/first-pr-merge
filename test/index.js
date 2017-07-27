@@ -28,7 +28,7 @@ describe('first-pr-merge', () => {
                 )),
                 createComment: expect.createSpy()
             }
-        };;
+        };
 
         robot.auth = () => Promise.resolve(github);
     });
