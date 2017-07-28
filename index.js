@@ -3,13 +3,10 @@ const yaml = require('js-yaml');
 module.exports = robot => {
     robot.on('pull_request.closed', async context => {
         if (context.payload.pull_request.merged) {
-            const userLogin = context.payload.pull_request.user.login;
-
             const response = await context.github.issues.getForRepo(context.repo({
                 state: 'all',
-                creator: userLogin
+                creator: context.payload.pull_request.user.login
             }));
-
             const countPR = response.data.filter(data => data.pull_request);
 
             if (countPR.length === 1) {
