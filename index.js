@@ -5,7 +5,9 @@ module.exports = robot => {
             const {owner, repo} = context.repo();
             const res = await context.github.search.issues({q: `is:pr is:merged author:${creator} repo:${owner}/${repo}`});
 
-            if (res.data.items.length === 1) {
+            const mergedPRs = res.data.items.filter(pr => pr.number != context.payload.pull_request.number);
+
+            if (mergedPRs.length === 0) {
                 try {
                     const config = await context.config('config.yml');
                     context.github.issues.createComment(context.issue({body: config.firstPRMergeComment}));
