@@ -29,5 +29,9 @@
   },
   "dependencies": {
     "probot": "^0.8.0"
+  },
+  "engines": {
+    "node": ">= 7.7.0",
+    "npm": ">= 4.0.0"
   }
 }
