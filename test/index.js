@@ -2,9 +2,7 @@ const expect = require('expect');
 const {createRobot} = require('probot');
 const plugin = require('..');
 const successPayload = require('./events/successPayload');
-const successIssueRes = require('./events/successIssueRes');
 const failPayload = require('./events/failPayload');
-const failIssueRes = require('./events/failIssueRes');
 
 describe('first-pr-merge', () => {
     let robot;
@@ -23,10 +21,14 @@ describe('first-pr-merge', () => {
                 }))
             },
             issues: {
-                getForRepo: expect.createSpy().andReturn(Promise.resolve(
-                    successIssueRes
-                )),
                 createComment: expect.createSpy()
+            },
+            search: {
+                issues: expect.createSpy().andReturn(Promise.resolve({
+                    data: {
+                        items: ['hi']
+                    }
+                }))
             }
         };
 
@@ -37,11 +39,8 @@ describe('first-pr-merge', () => {
         it('posts a comment because it is a user\'s first pr merged', async () => {
             await robot.receive(successPayload);
 
-            expect(github.issues.getForRepo).toHaveBeenCalledWith({
-                owner: 'hiimbex',
-                repo: 'testing-things',
-                state: 'all',
-                creator: 'hiimbex-test'
+            expect(github.search.issues).toHaveBeenCalledWith({
+                q: `is:pr is:merged author:hiimbex-test repo:hiimbex/testing-things`
             });
 
             expect(github.repos.getContent).toHaveBeenCalledWith({
@@ -56,17 +55,18 @@ describe('first-pr-merge', () => {
 
     describe('first-pr-merge failure', () => {
         beforeEach(() => {
-            github.issues.getForRepo = expect.createSpy().andReturn(Promise.resolve(failIssueRes));
+            github.search.issues.andReturn(Promise.resolve({
+                data: {
+                    items: ['hi', 'also hi']
+                }
+            }));
         });
 
         it('posts a comment because it is a user\'s first pr merged', async () => {
             await robot.receive(failPayload);
 
-            expect(github.issues.getForRepo).toHaveBeenCalledWith({
-                owner: 'hiimbex',
-                repo: 'testing-things',
-                state: 'all',
-                creator: 'hiimbex'
+            expect(github.search.issues).toHaveBeenCalledWith({
+                q: `is:pr is:merged author:hiimbex repo:hiimbex/testing-things`
             });
 
             expect(github.repos.getContent).toNotHaveBeenCalled();
