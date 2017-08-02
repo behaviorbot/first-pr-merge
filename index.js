@@ -5,7 +5,7 @@ module.exports = robot => {
             const {owner, repo} = context.repo();
             const res = await context.github.search.issues({q: `is:pr is:merged author:${creator} repo:${owner}/${repo}`});
 
-            const mergedPRs = res.data.items.filter(pr => pr.number != context.payload.pull_request.number);
+            const mergedPRs = res.data.items.filter(pr => pr.number !== context.payload.pull_request.number);
 
             if (mergedPRs.length === 0) {
                 try {

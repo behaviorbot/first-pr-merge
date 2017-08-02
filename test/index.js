@@ -26,7 +26,7 @@ describe('first-pr-merge', () => {
             search: {
                 issues: expect.createSpy().andReturn(Promise.resolve({
                     data: {
-                        items: ['hi']
+                        items: []
                     }
                 }))
             }
