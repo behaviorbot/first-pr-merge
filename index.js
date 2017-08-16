@@ -10,7 +10,9 @@ module.exports = robot => {
             if (mergedPRs.length === 0) {
                 try {
                     const config = await context.config('config.yml');
-                    context.github.issues.createComment(context.issue({body: config.firstPRMergeComment}));
+                    if (config.firstPRMergeComment) {
+                        context.github.issues.createComment(context.issue({body: config.firstPRMergeComment}));
+                    }
                 } catch (err) {
                     if (err.code !== 404) {
                         throw err;
