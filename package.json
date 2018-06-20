@@ -24,7 +24,7 @@
     "standard": "^10.0.3"
   },
   "dependencies": {
-    "probot": "^3.0.0"
+    "probot": "6.2.0"
   },
   "engines": {
     "node": ">= 7.7.0",
