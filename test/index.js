@@ -1,5 +1,5 @@
 const expect = require('expect')
-const {createRobot} = require('probot')
+const { createRobot } = require('probot')
 const plugin = require('..')
 const successPayload = require('./events/successPayload')
 const failPayload = require('./events/failPayload')
