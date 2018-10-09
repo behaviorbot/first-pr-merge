@@ -1,16 +1,16 @@
 const expect = require('expect')
-const {createRobot} = require('probot')
+const { Application } = require('probot')
 const plugin = require('..')
 const successPayload = require('./events/successPayload')
 const failPayload = require('./events/failPayload')
 
 describe('first-pr-merge', () => {
-  let robot
+  let app
   let github
 
   beforeEach(() => {
-    robot = createRobot()
-    plugin(robot)
+    app = new Application()
+    plugin(app)
 
     github = {
       repos: {
@@ -32,12 +32,12 @@ describe('first-pr-merge', () => {
       }
     }
 
-    robot.auth = () => Promise.resolve(github)
+    app.auth = () => Promise.resolve(github)
   })
 
   describe('first-pr-merge success', () => {
     it('posts a comment because it is a user\'s first pr merged', async () => {
-      await robot.receive(successPayload)
+      await app.receive(successPayload)
 
       expect(github.search.issues).toHaveBeenCalledWith({
         q: `is:pr is:merged author:hiimbex-test repo:hiimbex/testing-things`
@@ -63,7 +63,7 @@ describe('first-pr-merge', () => {
     })
 
     it('posts a comment because it is a user\'s first pr merged', async () => {
-      await robot.receive(failPayload)
+      await app.receive(failPayload)
 
       expect(github.search.issues).toHaveBeenCalledWith({
         q: `is:pr is:merged author:hiimbex repo:hiimbex/testing-things`
