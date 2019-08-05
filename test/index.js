@@ -1,8 +1,8 @@
 const expect = require('expect')
 const { Application } = require('probot')
-const plugin = require('..')
 const successPayload = require('./events/successPayload')
 const failPayload = require('./events/failPayload')
+const plugin = require('..')
 
 describe('first-pr-merge', () => {
   let app
@@ -14,7 +14,7 @@ describe('first-pr-merge', () => {
 
     github = {
       repos: {
-        getContent: expect.createSpy().andReturn(Promise.resolve({
+        getContents: expect.createSpy().andReturn(Promise.resolve({
           data: {
             content: Buffer.from(`firstPRMergeComment: >\n  Hello World!`).toString('base64')
           }
@@ -43,7 +43,7 @@ describe('first-pr-merge', () => {
         q: `is:pr is:merged author:hiimbex-test repo:hiimbex/testing-things`
       })
 
-      expect(github.repos.getContent).toHaveBeenCalledWith({
+      expect(github.repos.getContents).toHaveBeenCalledWith({
         owner: 'hiimbex',
         repo: 'testing-things',
         path: '.github/config.yml'
@@ -69,7 +69,7 @@ describe('first-pr-merge', () => {
         q: `is:pr is:merged author:hiimbex repo:hiimbex/testing-things`
       })
 
-      expect(github.repos.getContent).toNotHaveBeenCalled()
+      expect(github.repos.getContents).toNotHaveBeenCalled()
       expect(github.issues.createComment).toNotHaveBeenCalled()
     })
   })
