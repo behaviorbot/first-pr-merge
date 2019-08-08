@@ -1,5 +1,6 @@
 const expect = require('expect')
 const { Application } = require('probot')
+const { GitHubAPI } = require('probot/lib/github')
 const successPayload = require('./events/successPayload')
 const failPayload = require('./events/failPayload')
 const plugin = require('..')
@@ -12,31 +13,20 @@ describe('first-pr-merge', () => {
     app = new Application()
     plugin(app)
 
-    github = {
-      repos: {
-        getContents: expect.createSpy().andReturn(Promise.resolve({
-          data: {
-            content: Buffer.from(`firstPRMergeComment: >\n  Hello World!`).toString('base64')
-          }
-        }))
-      },
-      issues: {
-        createComment: expect.createSpy()
-      },
-      search: {
-        issues: expect.createSpy().andReturn(Promise.resolve({
-          data: {
-            items: []
-          }
-        }))
-      }
-    }
-
+    github = new GitHubAPI()
     app.auth = () => Promise.resolve(github)
   })
 
+  function makeResponse (msg) {
+    return Promise.resolve({ data: { content: Buffer.from(msg).toString('base64') } })
+  }
+
   describe('first-pr-merge success', () => {
     it('posts a comment because it is a user\'s first pr merged', async () => {
+      expect.spyOn(github.repos, 'getContents').andReturn(makeResponse(`firstPRMergeComment: >\n  Hello World!`))
+      expect.spyOn(github.search, 'issues').andReturn(Promise.resolve({ data: { items: [] } }))
+      expect.spyOn(github.issues, 'createComment')
+
       await app.receive(successPayload)
 
       expect(github.search.issues).toHaveBeenCalledWith({
@@ -54,15 +44,11 @@ describe('first-pr-merge', () => {
   })
 
   describe('first-pr-merge failure', () => {
-    beforeEach(() => {
-      github.search.issues.andReturn(Promise.resolve({
-        data: {
-          items: ['hi', 'also hi']
-        }
-      }))
-    })
-
     it('posts a comment because it is a user\'s first pr merged', async () => {
+      expect.spyOn(github.repos, 'getContents').andReturn(makeResponse(`firstPRMergeComment: >\n  Hello World!`))
+      expect.spyOn(github.search, 'issues').andReturn(Promise.resolve({ data: { items: ['hi', 'also hi'] } }))
+      expect.spyOn(github.issues, 'createComment')
+
       await app.receive(failPayload)
 
       expect(github.search.issues).toHaveBeenCalledWith({
