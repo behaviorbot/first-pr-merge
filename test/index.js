@@ -24,12 +24,12 @@ describe('first-pr-merge', () => {
   describe('first-pr-merge success', () => {
     it('posts a comment because it is a user\'s first pr merged', async () => {
       expect.spyOn(github.repos, 'getContents').andReturn(makeResponse(`firstPRMergeComment: >\n  Hello World!`))
-      expect.spyOn(github.search, 'issues').andReturn(Promise.resolve({ data: { items: [] } }))
+      expect.spyOn(github.search, 'issuesAndPullRequests').andReturn(Promise.resolve({ data: { items: [] } }))
       expect.spyOn(github.issues, 'createComment')
 
       await app.receive(successPayload)
 
-      expect(github.search.issues).toHaveBeenCalledWith({
+      expect(github.search.issuesAndPullRequests).toHaveBeenCalledWith({
         q: `is:pr is:merged author:hiimbex-test repo:hiimbex/testing-things`
       })
 
@@ -46,12 +46,12 @@ describe('first-pr-merge', () => {
   describe('first-pr-merge failure', () => {
     it('posts a comment because it is a user\'s first pr merged', async () => {
       expect.spyOn(github.repos, 'getContents').andReturn(makeResponse(`firstPRMergeComment: >\n  Hello World!`))
-      expect.spyOn(github.search, 'issues').andReturn(Promise.resolve({ data: { items: ['hi', 'also hi'] } }))
+      expect.spyOn(github.search, 'issuesAndPullRequests').andReturn(Promise.resolve({ data: { items: ['hi', 'also hi'] } }))
       expect.spyOn(github.issues, 'createComment')
 
       await app.receive(failPayload)
 
-      expect(github.search.issues).toHaveBeenCalledWith({
+      expect(github.search.issuesAndPullRequests).toHaveBeenCalledWith({
         q: `is:pr is:merged author:hiimbex repo:hiimbex/testing-things`
       })
 
